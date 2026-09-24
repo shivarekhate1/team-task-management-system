@@ -19,14 +19,20 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore TaskManagementSystem.slnx
+    - name: Restore backend dependencies
+      run: dotnet restore Backend/TaskManagement.API/TaskManagement.API.csproj
 
-    - name: Build solution
-      run: dotnet build TaskManagementSystem.slnx --no-restore -c Release
+    - name: Restore test dependencies
+      run: dotnet restore Tests/TaskManagement.Tests/TaskManagement.Tests.csproj
+
+    - name: Build backend
+      run: dotnet build Backend/TaskManagement.API/TaskManagement.API.csproj --no-restore -c Release
+
+    - name: Build tests
+      run: dotnet build Tests/TaskManagement.Tests/TaskManagement.Tests.csproj --no-restore -c Release
 
     - name: Run xUnit Unit Tests
-      run: dotnet test Tests/TaskManagement.Tests/TaskManagement.Tests.csproj -c Release --verbosity normal
+      run: dotnet test Tests/TaskManagement.Tests/TaskManagement.Tests.csproj --no-build -c Release --verbosity normal
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
