@@ -11,29 +11,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore TaskManagementSystem.sln
+      run: dotnet restore TaskManagementSystem.slnx
 
     - name: Build solution
-      run: dotnet build TaskManagementSystem.sln --no-restore -c Release
+      run: dotnet build TaskManagementSystem.slnx --no-restore -c Release
 
     - name: Run xUnit Unit Tests
-      run: dotnet test Tests/TaskManagement.Tests/TaskManagement.Tests.csproj --no-build -c Release --verbosity normal
+      run: dotnet test Tests/TaskManagement.Tests/TaskManagement.Tests.csproj -c Release --verbosity normal
 
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '20'
 
     - name: Build React Frontend
+      working-directory: Frontend/task-management-ui
       run: |
-        cd Frontend/task-management-ui
         npm ci
         npm run build
