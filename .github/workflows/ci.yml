@@ -1,0 +1,39 @@
+name: CI Build & Test Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore TaskManagementSystem.sln
+
+    - name: Build solution
+      run: dotnet build TaskManagementSystem.sln --no-restore -c Release
+
+    - name: Run xUnit Unit Tests
+      run: dotnet test Tests/TaskManagement.Tests/TaskManagement.Tests.csproj --no-build -c Release --verbosity normal
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Build React Frontend
+      run: |
+        cd Frontend/task-management-ui
+        npm ci
+        npm run build

@@ -1,0 +1,9 @@
+{
+  "name": "frontend",
+  "private": true,
+  "scripts": {
+    "start": "npm --prefix task-management-ui start",
+    "dev": "npm --prefix task-management-ui run dev",
+    "build": "npm --prefix task-management-ui run build"
+  }
+}

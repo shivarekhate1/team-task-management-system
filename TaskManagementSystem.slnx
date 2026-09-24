@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Backend/">
+    <Project Path="Backend/TaskManagement.API/TaskManagement.API.csproj" />
+    <Project Path="Backend/TaskManagement.Application/TaskManagement.Application.csproj" />
+    <Project Path="Backend/TaskManagement.Domain/TaskManagement.Domain.csproj" />
+    <Project Path="Backend/TaskManagement.Infrastructure/TaskManagement.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/TaskManagement.Tests/TaskManagement.Tests.csproj" />
+  </Folder>
+</Solution>

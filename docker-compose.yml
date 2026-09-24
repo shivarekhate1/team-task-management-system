@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: taskmanagement_db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Passw0rd!
+    ports:
+      - "1433:1433"
+    networks:
+      - task_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Backend/Dockerfile
+    container_name: taskmanagement_api
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=TaskManagementDb;User Id=sa;Password=YourStrong@Passw0rd!;TrustServerCertificate=True
+      - Jwt__SecretKey=SUPER_SECRET_TASK_MANAGEMENT_KEY_2026_CHANGE_IN_PRODUCTION!
+      - Jwt__Issuer=TaskManagementAPI
+      - Jwt__Audience=TaskManagementUI
+    ports:
+      - "5198:80"
+    depends_on:
+      - sqlserver
+    networks:
+      - task_network
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: taskmanagement_ui
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - task_network
+
+networks:
+  task_network:
+    driver: bridge
